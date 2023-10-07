@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>UGX<-->USD Exchange Rates</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="{{url_for('static',filename='styles.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <section class="container">
+      <u><h4>UGX &DoubleVerticalBar; USD &dollar; Exchange Rates</h4></u>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link {{on_start}}" data-toggle="tab" href="#current">Current</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#history">History Charts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{on_curr}}" data-toggle="tab" href="#calic">Calic</a>
+        </li>
+      </ul>
+      
+      <div class="tab-content">
+        <div id="current" class="container tab-pane {{on_start}}">
+          <p class="border border-end-0 border-info p-2 mt-3">
+          <u><strong class="text-success">What is UGX?</strong></u>
+          <br>
+          <span class="text-info">The UGX (Ugandan Shilling) is the official currency of Uganda. It is abbreviated as UGX and is often represented with the symbol "USh." The Ugandan Shilling is subdivided into smaller units called cents. It is used for all types of transactions within Uganda and is managed by the Bank of Uganda. The exchange rate of the UGX can fluctuate relative to other currencies, impacting international trade and the cost of imported goods.</span>
+          <br>
+          <u><strong class="text-success">What is USD?</strong></u>
+          <br>
+          <span class="text-info">The USD (United States Dollar), commonly known as the United States Dollar, is the official currency of the United States and is one of the world's most widely used reserve currencies. It is abbreviated as USD and is symbolized by the "$" sign. The dollar is subdivided into 100 smaller units called cents. It plays a crucial role in global finance and international trade, serving as a benchmark currency for commodity prices and financial markets. The USD's strength and stability make it a preferred currency for many international transactions and investments.</span>
+          </p>
+          <div class="border border-top-0 border-success rounded text-success text-center p-2 m-1">
+            <h4>{{API['curr_ex']}}</h4>
+            <h4>1 UGX = {{unit_ugx}} USD</h4>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">The current exchange rate today</div>
+            <img class="chart-image" src="https://www.exchangerates.org.uk{{API['curr_chart']}}" alt="" width="300" height="300">
+            Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
+          </div>
+        </div>
+        <div id="history" class="container tab-pane fade">
+        {%with days = [7,30,90,180,270,365] %} 
+        {% for chart in API['charts'] %}
+         <div class="chart-card">
+           <div class="chart-title">{{days[API['charts'].index(chart)]}} Days Ago</div>
+           <img class="chart-image" src="https://www.exchangerates.org.uk{{chart}}" alt="" width="300" height="300">
+         </div>
+         {% endfor %}
+         {% endwith %}
+        </div>
+        <div id="calic" class="container tab-pane pt-3 {{on_curr}}">
+        
+          <form method="POST">
+          <div class="input-group mb-3">
+            <span class="input-group-text">USD</span>
+            <input id="usd" type="text" class="form-control" name="usd" value="{{'0.00' if cov_usd == 0 else cov_usd}}">
+            <button class="btn btn-outline-secondary" onclick="clearUgx()" type="submit">&RightArrow;</button>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">UGX</span>
+            <input id="ugx" class="form-control" type="text" name="ugx" value="{{'0.00' if cov_ugx == 0 else cov_ugx}}">
+            <button class="btn btn-outline-secondary" onclick="clearUsd()" type="submit">&RightArrow;</button>
+          </div>
+         </form>
+         <p align="center" class="text-center text-info">
+           <span class="text-warning"><u>NOTRIKIS</u></span>
+         </p>
+        </div>
+        
+      </div>
+    </section> 
+    <script src="{{url_for('static',filename='index.js')}}"></script>
+  </body>
+</html>
+
+
+
+
